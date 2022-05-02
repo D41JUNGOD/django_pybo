@@ -29,10 +29,14 @@
     </table>
     <!-- paging -->
     <ul class="pagination justify-content-center">
+        <!-- first page-->
+        <li class="page-item">
+            <a class="page-link" href="?page=1">처음</a>
+        </li>
         <!-- prev page-->
         {% if question_list.has_previous %}
         <li class="page-item">
-            <a class="page-link" href="?page{{ question_list.previous_page_number }}">이전</a>
+            <a class="page-link" href="?page={{ question_list.previous_page_number }}">이전</a>
         </li>
         {% else %}
         <li class="page-item disabled">
@@ -63,6 +67,10 @@
             <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
         </li>
         {% endif %}
+        <!-- end page-->
+        <li class="page-item">
+            <a class="page-link" href="?page={{end_index}}">마지막</a>
+        </li>
     </ul>
     <!-- finish paging -->
     <a href="{% url 'pybo:question_create' %}" class="btn btn-primary">

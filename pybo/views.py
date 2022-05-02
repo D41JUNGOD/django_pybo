@@ -13,7 +13,8 @@ def index(request):
     question_list = Question.objects.order_by('-create_date')
     paignator = Paginator(question_list, 10)  # show page per 10 questions.
     page_obj = paignator.get_page(page)
-    context = {'question_list': page_obj}
+    #print(paignator.page_range[-1])
+    context = {'question_list': page_obj, 'end_index': paignator.page_range[-1]}
     return render(request, 'pybo/question_list.html', context)
 
 
