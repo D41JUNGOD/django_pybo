@@ -17,6 +17,7 @@ class QuestionForm(forms.ModelForm):
             'content': '내용',
         }
 
+
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer  # 사용 모델
