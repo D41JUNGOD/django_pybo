@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load pybo_filter %}
 {% block content %}
 <div class="container my-3">
     <table class="table">
@@ -13,7 +14,10 @@
             {% if question_list %}
             {% for question in question_list %}
             <tr>
-                <td>{{ forloop.counter }}</td>
+                <td>
+                    <!-- number = all - start - now + 1 -->
+                    {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1}}
+                </td>
                 <td>
                     <a href="{% url 'pybo:detail' question_id=question.id %}">{{ question.subject }}</a>
                 </td>
@@ -30,9 +34,15 @@
     <!-- paging -->
     <ul class="pagination justify-content-center">
         <!-- first page-->
+        <!--{% if question_list.has_previous %}
         <li class="page-item">
             <a class="page-link" href="?page=1">처음</a>
         </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">처음</a>
+        </li>
+        {% endif %}-->
         <!-- prev page-->
         {% if question_list.has_previous %}
         <li class="page-item">
@@ -68,9 +78,16 @@
         </li>
         {% endif %}
         <!-- end page-->
+        <!--{% if question_list.has_next %}
         <li class="page-item">
             <a class="page-link" href="?page={{end_index}}">마지막</a>
         </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">마지막</a>
+        </li>
+
+        {% endif %}-->
     </ul>
     <!-- finish paging -->
     <a href="{% url 'pybo:question_create' %}" class="btn btn-primary">
