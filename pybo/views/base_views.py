@@ -1,14 +1,25 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 from ..models import Question
 
 def index(request):
     page = request.GET.get('page', '1')  # page
+    kw = request.GET.get('kw', '')
     question_list = Question.objects.order_by('-create_date')
+    if kw:
+        question_list = question_list.filter(
+            Q(subject__icontains=kw) |
+            Q(content__icontains=kw) |
+            Q(answer__content__icontains=kw) |
+            Q(author__username__icontains=kw) |
+            Q(answer__author__username__icontains=kw)
+        ).distinct()
+
     paignator = Paginator(question_list, 10)  # show page per 10 questions.
     page_obj = paignator.get_page(page)
-    context = {'question_list': page_obj, 'end_index': paignator.page_range[-1]}
+    context = {'question_list': page_obj, 'page': page, 'kw': kw}
     return render(request, 'pybo/question_list.html', context)
 
 
